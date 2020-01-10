@@ -12,56 +12,61 @@ import Dashboard from "./Components/Dashboard";
 import authProvider from "./Utils/authProvider";
 import { AgentList, AgentCreate, AgentEdit } from "./Components/Agents/Agents";
 import {
-  PropertiesList,
-  PropertiesCreate,
-  PropertiesEdit
+  PropertyList,
+  PropertyEdit,
+  PropertyCreate
 } from "./Components/Properties/Properties";
-// import dataProvider from "./Utils/dataProvider";
+import {
+  PropertytypeList,
+  PropertytypeEdit,
+  PropertytypeCreate
+} from "./Components/Properties/PropertyTypes";
 
-const httpClient = (url, options = {}) => {
-  if (!options.headers) {
-    options.headers = new Headers({ Accept: "application/json" });
-  }
-  // add your own headers here
-  options.headers.set(
-    "X-Custom-Header",
-    "foobar",
-    "Access-Control-Expose-Headers: 'Content-Range'"
-  );
-  return fetchUtils.fetchJson(url, options);
-};
+//
+// import dataProvider from "./Utils/dataProvider";
+//
+// const httpClient = (url, options = {}) => {
+//   if (!options.headers) {
+//     options.headers = new Headers({ Accept: "application/json" });
+//   }
+//   // add your own headers here
+//   options.headers.set(
+//   "Access-Control-Expose-Headers", "Content-Range"
+//
+//   );
+//   return fetchUtils.fetchJson(url, options);
+// };
 const dataProvider = jsonServerProvider(
-  "https://fiverapp.herokuapp.com",
-  httpClient
+  "http://localhost:8080"
 );
 
 const App = () => {
   return (
     <Admin
       dashboard={Dashboard}
-      // authProvider={authProvider}
+      authProvider={authProvider}
       dataProvider={dataProvider}
     >
       <Resource
         name="agents"
-        list={ListGuesser}
-        // edit={AgentEdit}
-        // create={AgentCreate}
+        list={AgentList}
+        edit={AgentEdit}
+        create={AgentCreate}
       />
 
       <Resource
-        name="properties"
-        list={PropertiesList}
-        // edit={PropertiesEdit}
-        // create={PropertiesCreate}
+        name="propertytypes"
+        list={PropertytypeList}
+        edit={PropertytypeEdit}
+        create={PropertytypeCreate}
       />
-      {/*
+
       <Resource
-        name="todos"
-        list={ListGuesser}
-        edit={EditGuesser}
-        // create={PropertiesCreate}
-      /> */}
+        name="property"
+        list={PropertyList}
+        edit={PropertyEdit}
+        create={PropertyCreate}
+      />
 
       {/* <Resource
         label="Posts lol"

@@ -27,19 +27,67 @@ const PropertiesFilter = props => (
   </Filter>
 );
 
-export const PropertiesList = props => (
-  <List filters={<PropertiesFilter />} {...props}>
-    <Datagrid>
-      <TextField source="id" />
-      <ReferenceField source="userId" reference="users">
-        <TextField source="name" />
-      </ReferenceField>
-      <TextField source="title" />
-      {/* <TextField source="body" /> */}
-      <EditButton />
-    </Datagrid>
-  </List>
+export const PropertyList = props => (
+    <List {...props}>
+        <Datagrid rowClick="edit">
+            <TextField source="id" />
+            <ReferenceField source="agentId" reference="agents">
+              <TextField source="Name" />
+            </ReferenceField>
+            <ReferenceField source="propertytypeId" reference="propertytypes">
+              <TextField source="Name" />
+            </ReferenceField>
+            <TextField source="value" />
+            <EditButton />
+        </Datagrid>
+    </List>
 );
+
+
+export const PropertyEdit = props => (
+    <Edit {...props}>
+        <SimpleForm>
+            <TextInput disabled source="id" />
+            <ReferenceInput source="agentId" reference="agents">
+              <SelectInput optionText="Name" />
+            </ReferenceInput>
+            <ReferenceInput source="propertytypeId" reference="propertytypes">
+              <SelectInput optionText="Name" />
+            </ReferenceInput>
+            <TextInput source="value" />
+        </SimpleForm>
+    </Edit>
+);
+
+
+export const PropertyCreate = props => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput disabled source="id" />
+            <ReferenceInput source="agentId" reference="agents">
+              <SelectInput optionText="Name" />
+            </ReferenceInput>
+            <ReferenceInput source="propertytypeId" reference="propertytypes">
+              <SelectInput optionText="Name" />
+            </ReferenceInput>
+            <TextInput source="value" />
+        </SimpleForm>
+    </Create>
+);
+
+// export const PropertiesList = props => (
+//   <List filters={<PropertiesFilter />} {...props}>
+//     <Datagrid>
+//       <TextField source="id" />
+//       <ReferenceField source="userId" reference="users">
+//         <TextField source="name" />
+//       </ReferenceField>
+//       <TextField source="title" />
+//       {/* <TextField source="body" /> */}
+//       <EditButton />
+//     </Datagrid>
+//   </List>
+// );
 const PropertieTitle = ({ record }) => {
   return <span>Post {record ? `"${record.title}"` : ""}</span>;
 };

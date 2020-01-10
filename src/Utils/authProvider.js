@@ -1,6 +1,8 @@
 export default {
   // called when the user attempts to log in
-  login: ({ username }) => {
+  login: ({ username, password }) => {
+    console.log(username);console.log(password);
+
     localStorage.setItem("username", username);
     // accept all username/password combinations
     return Promise.resolve();

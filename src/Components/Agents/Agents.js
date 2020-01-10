@@ -18,36 +18,36 @@ export const AgentList = props => (
   <List {...props}>
     <Datagrid rowClick="edit">
       <TextField source="id" />
-      <TextField source="name" />
-      <TextField source="phone" />
-      <TextField source="website" />
+      <TextField source="Name" />
+      <TextField source="Description" />
+      <TextField source="Status" />
       <EditButton />
     </Datagrid>
   </List>
 );
 
 const AgentTitle = ({ record }) => {
-  return <span>User {record ? `"${record.name}"` : ""}</span>;
+  return <span>User {record ? `"${record.Name}"` : ""}</span>;
 };
 
 export const AgentEdit = props => (
   <Edit title={<AgentTitle />} {...props}>
     <SimpleForm>
       <TextInput disabled source="id" />
-      <TextInput source="name" />
-      <TextInput source="phone" />
-      <TextInput source="website" />
-    </SimpleForm>
+      <TextInput source="Name" />
+      <TextInput multiline source="Description" />
+      <TextInput source="Status" />
+  </SimpleForm>
   </Edit>
 );
 // UserCreate;
 export const AgentCreate = props => (
   <Create {...props}>
     <SimpleForm>
-      <TextInput source="id" />
-      <TextInput source="name" />
-      <TextInput source="phone" />
-      <TextInput source="website" />
+      <TextInput disabled source="id" />
+      <TextInput source="Name" />
+      <TextInput multiline source="Description" />
+      <TextInput source="Status" />
     </SimpleForm>
   </Create>
 );
