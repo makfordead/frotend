@@ -19,16 +19,18 @@ import {
 const PropertiesFilter = props => (
   <Filter {...props}>
     <TextInput label="Enter Title" source="q" alwaysOn />
-    {/* <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
-      <SelectInput optionText="name" />
+     <ReferenceInput label="Agents" source="agentId" reference="agents" allowEmpty>
+      <SelectInput optionText="Name" />
     </ReferenceInput>
-    {console.log(props.data)}
-    <SelectInput label="Title" optionText="title" /> */}
+    <ReferenceInput label="PropertyTypes" source="propertytypeId" reference="propertytypes" allowEmpty>
+     <SelectInput optionText="Name" />
+   </ReferenceInput>
+
   </Filter>
 );
 
 export const PropertyList = props => (
-    <List {...props}>
+    <List filters={<PropertiesFilter />} {...props}>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <ReferenceField source="agentId" reference="agents">
