@@ -1,9 +1,16 @@
+import axios from 'axios';
+
+
 export default {
   // called when the user attempts to log in
   login: ({ username, password }) => {
     console.log(username);console.log(password);
-
-    localStorage.setItem("username", username);
+    const auth ={
+      username: username,
+      password: password
+    }
+axios.post('https://localhost:8080/LOGIN_ENDPOINT', auth).then(res => console.log(res));
+    // localStorage.setItem("username", username);
     // accept all username/password combinations
     return Promise.resolve();
   },

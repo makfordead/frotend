@@ -9,7 +9,7 @@ import {
 } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
 import Dashboard from "./Components/Dashboard";
-import authProvider from "./Utils/authProvider";
+// import authProvider from "./Utils/authProvider";
 import { AgentList, AgentCreate, AgentEdit } from "./Components/Agents/Agents";
 import {
   PropertyList,
@@ -43,9 +43,9 @@ const dataProvider = jsonServerProvider(
 const App = () => {
   return (
     <Admin
-      dashboard={Dashboard}
-      authProvider={authProvider}
-      dataProvider={dataProvider}
+       dashboard={Dashboard}
+      // authProvider={authProvider}
+       dataProvider={dataProvider}
     >
       <Resource
         name="agents"
