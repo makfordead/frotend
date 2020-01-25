@@ -1,35 +1,38 @@
-import axios from 'axios';
-
-
 export default {
   // called when the user attempts to log in
-  login: ({ username, password }) => {
-    console.log(username);console.log(password);
-    const auth ={
-      username: username,
-      password: password
-    }
-axios.post('https://localhost:8080/LOGIN_ENDPOINT', auth).then(res => console.log(res));
-    // localStorage.setItem("username", username);
-    // accept all username/password combinations
-    return Promise.resolve();
-  },
+  login: ({ username, password }) =>  {
+       const request = new Request('http://localhost:8080/api/v1/auth/login', {
+           method: 'POST',
+           body: JSON.stringify({ username, password }),
+           headers: new Headers({ 'Content-Type': 'application/json' }),
+       });
+       return fetch(request)
+           .then(response => {
+               if (response.status < 200 || response.status >= 300) {
+                   throw new Error(response.statusText);
+               }
+               return response.json();
+           })
+           .then(({ token }) => {
+               localStorage.setItem('token', token);
+           });
+   },
   // called when the user clicks on the logout button
   logout: () => {
-    localStorage.removeItem("username");
+    localStorage.removeItem("token");
     return Promise.resolve();
   },
   // called when the API returns an error
   checkError: ({ status }) => {
     if (status === 401 || status === 403) {
-      localStorage.removeItem("username");
+      localStorage.removeItem("token");
       return Promise.reject();
     }
     return Promise.resolve();
   },
   // called when the user navigates to a new location, to check for authentication
   checkAuth: () => {
-    return localStorage.getItem("username")
+    return localStorage.getItem("token")
       ? Promise.resolve()
       : Promise.reject();
   },

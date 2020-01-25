@@ -3,14 +3,10 @@ import {
   List,
   Datagrid,
   TextField,
-  EmailField,
   EditButton,
-  ReferenceInput,
   SimpleForm,
   Edit,
   TextInput,
-  SelectInput,
-  LongTextInput,
   Create
 } from "react-admin";
 
@@ -20,7 +16,7 @@ export const PropertytypeList = props => (
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="Name" />
-            <TextField multiline source="Description" />
+            <TextField source="Description" />
             <EditButton />
       </Datagrid>
     </List>
@@ -32,7 +28,7 @@ export const PropertytypeEdit = props => (
         <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput source="Name" />
-            <TextInput multiline source="Description" />
+            <TextInput source="Description" />
         </SimpleForm>
     </Edit>
 )
@@ -42,7 +38,7 @@ export const PropertytypeCreate = props => (
         <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput source="Name" />
-            <TextInput multiline source="Description" />
+            <TextInput  source="Description" />
         </SimpleForm>
     </Create>
 )

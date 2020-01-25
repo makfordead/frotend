@@ -10,7 +10,6 @@ import {
   Edit,
   TextInput,
   SelectInput,
-  LongTextInput,
   Create,
   Filter
 } from "react-admin";
@@ -18,11 +17,10 @@ import {
 // Filter with property type
 const PropertiesFilter = props => (
   <Filter {...props}>
-    <TextInput label="Enter Title" source="q" alwaysOn />
-     <ReferenceInput label="Agents" source="agentId" reference="agents" allowEmpty>
+     <ReferenceInput label="Agents" source="agentId" reference="agents" allowEmpty alwaysOn>
       <SelectInput optionText="Name" />
     </ReferenceInput>
-    <ReferenceInput label="PropertyTypes" source="propertytypeId" reference="propertytypes" allowEmpty>
+    <ReferenceInput label="PropertyTypes" source="propertytypeId" reference="propertytypes" allowEmpty alwaysOn>
      <SelectInput optionText="Name" />
    </ReferenceInput>
 
@@ -39,24 +37,84 @@ export const PropertyList = props => (
             <ReferenceField source="propertytypeId" reference="propertytypes">
               <TextField source="Name" />
             </ReferenceField>
+            <TextField source="key" />
             <TextField source="value" />
+            <TextField source="valueType" />
+            <TextField source="lastEdited"/>
             <EditButton />
         </Datagrid>
     </List>
 );
 
 
+const validateUserBoolean = value => {
+  if (
+    value.value !== "TRUE" &&
+    value.value !== "FALSE" &&
+    value.value !== "false" &&
+    value.value !== "true"
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+const validateUserNumber = value => {
+  if (value !== undefined) {
+    if (isNaN(value)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+};
+
+const validateUserCreation = values => {
+  const errors = {};
+  if (!values.type) {
+    errors.type = ["Please select the type of value you want to input"];
+  } else {
+    if (values.type === "Boolean") {
+      if (!validateUserBoolean(values)) {
+        errors.value = ["Please enter a Boolean that is true/false"];
+      }
+    } else if (values.type === "Numeric") {
+      if (!validateUserNumber(values.value)) {
+        errors.value = ["Please enter a Numeric Value"];
+      }
+    } else if (values.type === "Text") {
+      if (validateUserNumber(values.value) || validateUserBoolean(values)) {
+        errors.value = ["Please enter a String Value"];
+      }
+    }
+  }
+  return errors;
+};
+
+
+
 export const PropertyEdit = props => (
     <Edit {...props}>
-        <SimpleForm>
+        <SimpleForm validate={validateUserCreation}>
             <TextInput disabled source="id" />
-            <ReferenceInput source="agentId" reference="agents">
+            <TextInput source="key" />
+            <ReferenceInput key="agentId" source="agentId" reference="agents">
               <SelectInput optionText="Name" />
             </ReferenceInput>
-            <ReferenceInput source="propertytypeId" reference="propertytypes">
-              <SelectInput optionText="Name" />
+            <ReferenceInput key="propertytypeId" source="propertytypeId" reference="propertytypes">
+              <SelectInput  optionText="Name" />
             </ReferenceInput>
-            <TextInput source="value" />
+            <SelectInput
+                source="type"
+                choices={[
+          { id: "Boolean", name: "Boolean" },
+          { id: "Text", name: "Text" },
+          { id: "Numeric", name: "Numeric" }
+        ]}
+      />
+      <TextInput source="value" />
+      <TextInput disabled source="lastEdited"/>
         </SimpleForm>
     </Edit>
 );
@@ -64,59 +122,24 @@ export const PropertyEdit = props => (
 
 export const PropertyCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm validate={validateUserCreation}>
             <TextInput disabled source="id" />
+            <TextInput source="key" />
             <ReferenceInput source="agentId" reference="agents">
               <SelectInput optionText="Name" />
             </ReferenceInput>
             <ReferenceInput source="propertytypeId" reference="propertytypes">
               <SelectInput optionText="Name" />
             </ReferenceInput>
+            <SelectInput
+        source="type"
+        choices={[
+          { id: "Boolean", name: "Boolean" },
+          { id: "Text", name: "Text" },
+          { id: "Numeric", name: "Numeric" }
+        ]}
+      />
             <TextInput source="value" />
         </SimpleForm>
     </Create>
-);
-
-// export const PropertiesList = props => (
-//   <List filters={<PropertiesFilter />} {...props}>
-//     <Datagrid>
-//       <TextField source="id" />
-//       <ReferenceField source="userId" reference="users">
-//         <TextField source="name" />
-//       </ReferenceField>
-//       <TextField source="title" />
-//       {/* <TextField source="body" /> */}
-//       <EditButton />
-//     </Datagrid>
-//   </List>
-// );
-const PropertieTitle = ({ record }) => {
-  return <span>Post {record ? `"${record.title}"` : ""}</span>;
-};
-
-export const PropertiesEdit = props => (
-  <Edit title={<PropertieTitle />} {...props}>
-    <SimpleForm>
-      <TextInput disabled source="id" />
-      <ReferenceInput source="userId" reference="users">
-        <SelectInput optionText="name" />
-      </ReferenceInput>
-
-      <TextInput source="title" />
-      <TextInput multiline source="body" />
-    </SimpleForm>
-  </Edit>
-);
-
-export const PropertiesCreate = props => (
-  <Create {...props}>
-    <SimpleForm>
-      <ReferenceInput source="userId" reference="users">
-        <SelectInput optionText="name" />
-      </ReferenceInput>
-
-      <TextInput source="title" />
-      <TextInput multiline source="body" />
-    </SimpleForm>
-  </Create>
 );

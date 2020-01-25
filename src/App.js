@@ -3,14 +3,18 @@ import React from "react";
 import {
   Admin,
   Resource,
-  ListGuesser,
-  EditGuesser,
-  fetchUtils
+  fetchUtils,
+  Login,
+  AppBar,
+  Layout,
+  UserMenu
 } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
 import Dashboard from "./Components/Dashboard";
-// import authProvider from "./Utils/authProvider";
-import { AgentList, AgentCreate, AgentEdit } from "./Components/Agents/Agents";
+ import authProvider from "./Utils/authProvider";
+import { AgentList, AgentCreate, AgentEdit, AgentShow } from "./Components/Agents/Agents";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 import {
   PropertyList,
   PropertyEdit,
@@ -21,30 +25,70 @@ import {
   PropertytypeEdit,
   PropertytypeCreate
 } from "./Components/Properties/PropertyTypes";
+import {AdminList, AdminEdit} from "./Components/Admin/Admin"
+import {createMuiTheme}  from "@material-ui/core/styles";
+import blue from "@material-ui/core/colors/blue";
 
-//
-// import dataProvider from "./Utils/dataProvider";
-//
-// const httpClient = (url, options = {}) => {
-//   if (!options.headers) {
-//     options.headers = new Headers({ Accept: "application/json" });
-//   }
-//   // add your own headers here
-//   options.headers.set(
-//   "Access-Control-Expose-Headers", "Content-Range"
-//
-//   );
-//   return fetchUtils.fetchJson(url, options);
-// };
+
+const httpClient = (url, options = {}) => {
+    if (!options.headers) {
+        options.headers = new Headers({ Accept: 'application/json' });
+    }
+    const token = localStorage.getItem('token');
+    options.headers.set('X-Authorization', `Bearer ${token}`);
+    return fetchUtils.fetchJson(url, options);
+};
 const dataProvider = jsonServerProvider(
-  "http://localhost:8080"
+  "http://localhost:8080", httpClient
 );
 
+const myLoginPage = () => <Login backgroundImage="" />
 const App = () => {
+  // dark theme/light theme starts
+   const [dark, setDark] = React.useState({
+     darkMode: false
+   });
+   const handleChange = name => event => {
+     setDark({ ...dark, [name]: event.target.checked });
+   };
+   const ConfigurationMenu = React.forwardRef(({ onClick }, ref) => (
+     <>
+       <FormControlLabel
+         control={
+           <Switch
+             checked={dark.darkMode}
+             onChange={handleChange("darkMode")}
+             value="darkMode"
+             color="#212121"
+           />
+         }
+         style={{ marginLeft: "5px" }}
+         label="Dark Mode"
+       />
+     </>
+   ));
+   const MyUserMenu = props => (
+     <UserMenu {...props}>
+       <ConfigurationMenu />
+     </UserMenu>
+   );
+   const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+   const myLayout = props => <Layout {...props} appBar={MyAppBar} />;
+   const MyTheme = createMuiTheme({
+     palette: {
+       type: dark.darkMode ? "dark" : "light",
+       primary: blue,
+       secondary: blue
+     }
+   });
+   // Dark/Light theme ends
   return (
     <Admin
+       theme={MyTheme}
+       appLayout={myLayout}
        dashboard={Dashboard}
-      // authProvider={authProvider}
+       loginPage={myLoginPage}
+       authProvider={authProvider}
        dataProvider={dataProvider}
     >
       <Resource
@@ -52,6 +96,7 @@ const App = () => {
         list={AgentList}
         edit={AgentEdit}
         create={AgentCreate}
+        show={AgentShow}
       />
 
       <Resource
@@ -67,14 +112,12 @@ const App = () => {
         edit={PropertyEdit}
         create={PropertyCreate}
       />
+      <Resource
+        name="admin"
+        list={AdminList}
+        edit={AdminEdit}
+      />
 
-      {/* <Resource
-        label="Posts lol"
-        name="posts"
-        // list={PropertiesList}
-        // edit={PropertiesEdit}
-        // create={PropertiesCreate}
-      /> */}
     </Admin>
   );
 };

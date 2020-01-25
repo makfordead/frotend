@@ -3,20 +3,24 @@ import {
   List,
   Datagrid,
   TextField,
-  EmailField,
   EditButton,
-  ReferenceInput,
   SimpleForm,
   Edit,
   TextInput,
   SelectInput,
-  LongTextInput,
-  Create
+  Create,
+  Show,
+  SimpleShowLayout,
+  ReferenceField,
+  ReferenceArrayField,
+  SingleFieldList,
+  ChipField
 } from "react-admin";
+import Card from '@material-ui/core/Card';
 
 export const AgentList = props => (
   <List {...props}>
-    <Datagrid rowClick="edit">
+    <Datagrid rowClick="show">
       <TextField source="id" />
       <TextField source="Name" />
       <TextField source="Description" />
@@ -25,6 +29,34 @@ export const AgentList = props => (
     </Datagrid>
   </List>
 );
+
+export const AgentShow = props => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="Name" />
+            <TextField source="Description" />
+            <TextField source="Status" />
+            <ReferenceArrayField source="propertyIds" reference="property">
+              <Datagrid>
+                <TextField source="id" />
+                <ReferenceField source="propertytypeId" reference="propertytypes">
+                  <TextField source="Name" />
+                </ReferenceField>
+                <TextField source="key" />
+                <TextField source="value" />
+                <TextField source="valueType" />
+                <TextField source="lastEdited"/>
+             </Datagrid>
+            </ReferenceArrayField>
+        </SimpleShowLayout>
+    </Show>
+);
+// kapil i need something like this:
+// {
+//   other agent stuff...
+//   properties: [1, propertyId: 2]
+// }
 
 const AgentTitle = ({ record }) => {
   return <span>User {record ? `"${record.Name}"` : ""}</span>;
@@ -35,8 +67,13 @@ export const AgentEdit = props => (
     <SimpleForm>
       <TextInput disabled source="id" />
       <TextInput source="Name" />
-      <TextInput multiline source="Description" />
-      <TextInput source="Status" />
+      <TextInput source="Description" />
+        <SelectInput source="Status" choices={[
+              { id: 'ACTIVE', name: 'ACTIVE' },
+              { id: 'INACTIVE', name: 'INACTIVE' },
+              { id: 'DISABLED', name: 'DISABLED' }
+          ]} />
+
   </SimpleForm>
   </Edit>
 );
@@ -46,8 +83,13 @@ export const AgentCreate = props => (
     <SimpleForm>
       <TextInput disabled source="id" />
       <TextInput source="Name" />
-      <TextInput multiline source="Description" />
-      <TextInput source="Status" />
+      <TextInput source="Description" />
+
+      <SelectInput source="Status" choices={[
+            { id: 'ACTIVE', name: 'ACTIVE' },
+            { id: 'INACTIVE', name: 'INACTIVE' },
+            { id: 'DISABLED', name: 'DISABLED' }
+        ]} />
     </SimpleForm>
   </Create>
 );
