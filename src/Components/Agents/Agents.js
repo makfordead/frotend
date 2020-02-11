@@ -13,10 +13,9 @@ import {
   SimpleShowLayout,
   ReferenceField,
   ReferenceArrayField,
-  SingleFieldList,
-  ChipField
+  Filter,
+  ReferenceInput
 } from "react-admin";
-import Card from '@material-ui/core/Card';
 
 export const AgentList = props => (
   <List {...props}>
@@ -30,6 +29,15 @@ export const AgentList = props => (
   </List>
 );
 
+const PropertiesFilter = props => (
+  <Filter {...props}>
+    <ReferenceInput label="PropertyTypes" source="propertytypeId" reference="propertytypes" allowEmpty alwaysOn>
+     <SelectInput optionText="Name" />
+   </ReferenceInput>
+  </Filter>
+);
+
+
 export const AgentShow = props => (
     <Show {...props}>
         <SimpleShowLayout>
@@ -38,16 +46,19 @@ export const AgentShow = props => (
             <TextField source="Description" />
             <TextField source="Status" />
             <ReferenceArrayField source="propertyIds" reference="property">
+              <List filters={<PropertiesFilter />} {...props}>
               <Datagrid>
-                <TextField source="id" />
-                <ReferenceField source="propertytypeId" reference="propertytypes">
-                  <TextField source="Name" />
-                </ReferenceField>
-                <TextField source="key" />
-                <TextField source="value" />
-                <TextField source="valueType" />
-                <TextField source="lastEdited"/>
+                  <TextField source="id" />
+                  <ReferenceField source="propertytypeId" reference="propertytypes">
+                    <TextField source="Name" />
+                  </ReferenceField>
+                  <TextField source="key" />
+                  <TextField source="value" />
+                  <TextField source="valueType" />
+                  <TextField source="lastEdited"/>
+                  <EditButton />
              </Datagrid>
+           </List>
             </ReferenceArrayField>
         </SimpleShowLayout>
     </Show>
@@ -57,6 +68,7 @@ export const AgentShow = props => (
 //   other agent stuff...
 //   properties: [1, propertyId: 2]
 // }
+
 
 const AgentTitle = ({ record }) => {
   return <span>User {record ? `"${record.Name}"` : ""}</span>;

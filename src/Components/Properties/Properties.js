@@ -98,13 +98,13 @@ export const PropertyEdit = props => (
     <Edit {...props}>
         <SimpleForm validate={validateUserCreation}>
             <TextInput disabled source="id" />
-            <TextInput source="key" />
             <ReferenceInput key="agentId" source="agentId" reference="agents">
               <SelectInput optionText="Name" />
             </ReferenceInput>
             <ReferenceInput key="propertytypeId" source="propertytypeId" reference="propertytypes">
               <SelectInput  optionText="Name" />
             </ReferenceInput>
+                  <TextInput source="key" />
             <SelectInput
                 source="type"
                 choices={[

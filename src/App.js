@@ -1,5 +1,5 @@
 // in src/App.js
-import React from "react";
+import React, {useEffect} from "react";
 import {
   Admin,
   Resource,
@@ -7,7 +7,8 @@ import {
   Login,
   AppBar,
   Layout,
-  UserMenu
+  UserMenu,
+  getResources
 } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
 import Dashboard from "./Components/Dashboard";
@@ -26,9 +27,18 @@ import {
   PropertytypeCreate
 } from "./Components/Properties/PropertyTypes";
 import {AdminList, AdminEdit} from "./Components/Admin/Admin"
+import {SystemList, SystemEdit} from './Components/System/System';
 import {createMuiTheme}  from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
-
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
+import Menu from "./Components/Menu/Menu";
+import SubjectIcon from "@material-ui/icons/Subject";
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import BuildIcon from "@material-ui/icons/Build";
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -48,7 +58,17 @@ const App = () => {
    const [dark, setDark] = React.useState({
      darkMode: false
    });
+   // to make sure that darkMode stays
+   useEffect(() => {
+     if(localStorage.getItem('darkMode') === true + ""){
+       setDark({...dark, darkMode: true})
+     }else{
+       setDark({...dark, darkMode: false})
+     }
+   }, [])
+   // ends
    const handleChange = name => event => {
+     localStorage.setItem('darkMode', event.target.checked + "");
      setDark({ ...dark, [name]: event.target.checked });
    };
    const ConfigurationMenu = React.forwardRef(({ onClick }, ref) => (
@@ -72,8 +92,22 @@ const App = () => {
        <ConfigurationMenu />
      </UserMenu>
    );
+   // custom menu implementation starts
+ const menuStyles = theme => ({
+   nested: {
+     paddingLeft: theme.spacing(3)
+   }
+ });
+ var MenuWithStyles = withStyles(menuStyles)(Menu);
+
+ const MyMenu = withRouter(
+   connect(state => ({
+     resources: getResources(state)
+   }))(MenuWithStyles)
+ );
+ // custom menu implementation ends
    const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
-   const myLayout = props => <Layout {...props} appBar={MyAppBar} />;
+   const myLayout = props => <Layout {...props} appBar={MyAppBar} menu={MyMenu} />;
    const MyTheme = createMuiTheme({
      palette: {
        type: dark.darkMode ? "dark" : "light",
@@ -97,6 +131,7 @@ const App = () => {
         edit={AgentEdit}
         create={AgentCreate}
         show={AgentShow}
+        options={{ label: "Agent Overview", menu: "A", icon: <SubjectIcon /> }}
       />
 
       <Resource
@@ -104,6 +139,11 @@ const App = () => {
         list={PropertytypeList}
         edit={PropertytypeEdit}
         create={PropertytypeCreate}
+        options={{
+          label: "Property Types",
+          menu: "A",
+          icon: <AssignmentTurnedInIcon />
+        }}
       />
 
       <Resource
@@ -111,13 +151,20 @@ const App = () => {
         list={PropertyList}
         edit={PropertyEdit}
         create={PropertyCreate}
+        options={{ label: "Properties", menu: "A", icon: <BookmarkIcon /> }}
       />
       <Resource
         name="admin"
         list={AdminList}
         edit={AdminEdit}
+        options={{ label: "User", menu: "B", icon: <AccountBoxIcon /> }}
       />
-
+      <Resource
+        name="system"
+        list={SystemList}
+        edit={SystemEdit}
+        options={{ label: "System", menu: "B", icon: <BuildIcon /> }}
+      />
     </Admin>
   );
 };
