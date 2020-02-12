@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { MenuItemLink } from "react-admin";
 import {
   List,
@@ -17,30 +17,56 @@ import SettingsIcon from "@material-ui/icons/Settings";
 class Menu extends Component {
   menuList = [
     { name: "A", label: "Agents", icon: <SupervisorAccountIcon /> },
-    { name: "B", label: "Settings", icon: <SettingsIcon /> }
+    { name: "B", label: "Settings", icon: <SettingsIcon /> },
+    { name: "D", label: "Dashboard", icon: <DashboardIcon /> }
   ];
   constructor(props) {
     super(props);
-    this.state = { openA: false, openB: false };
+    this.state = { openA: false, openB: false, openD: false };
   }
   render() {
     const { resources, onMenuClick } = this.props;
     return (
       <div>
         <List component="nav">
-          {/* for dashboard */}
-          <ListItem button component={Link} to="/">
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItem>
+          {/* for menu D */}
+          <div key={this.menuList[2].name}>
+            <ListItem
+              button
+              onClick={() => {
+                this.setState({ openD: !this.state.openD });
+              }}
+            >
+              <ListItemIcon>{this.menuList[2].icon}</ListItemIcon>
+              <ListItemText primary={this.menuList[2].label} />
+              {this.state.openD ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={this.state.openD} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {resources
+                  .filter(x => x.options.menu === this.menuList[2].name)
+                  .map((resource, i) => (
+                    <MenuItemLink
+                      key={"m" + i}
+                      to={`/${resource.name}`}
+                      primaryText={resource.options.label || resource.name}
+                      leftIcon={
+                        resource.options.icon
+                          ? resource.options.icon
+                          : undefined
+                      }
+                      onClick={onMenuClick}
+                      className={this.props.classes.nested}
+                    />
+                  ))}
+              </List>
+            </Collapse>
+          </div>
           {/* for menu A */}
           <div key={this.menuList[0].name}>
             <ListItem
               button
               onClick={() => {
-
                 this.setState({ openA: !this.state.openA });
               }}
             >
@@ -74,7 +100,6 @@ class Menu extends Component {
             <ListItem
               button
               onClick={() => {
-          
                 this.setState({ openB: !this.state.openB });
               }}
             >

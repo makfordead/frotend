@@ -11,7 +11,8 @@ import {
   getResources
 } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
-import Dashboard from "./Components/Dashboard";
+import { Route } from "react-router-dom";
+// import Dashboard from "./Components/Dashboard";
 import authProvider from "./Utils/authProvider";
 import {
   AgentList,
@@ -44,6 +45,19 @@ import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import BuildIcon from "@material-ui/icons/Build";
+import { Icon } from "@iconify/react";
+// for status overview
+import homeAnalytics from "@iconify/icons-mdi/home-analytics";
+//for agent performance
+import financeIcon from "@iconify/icons-mdi/finance";
+// for market analysis
+import chartPie from "@iconify/icons-mdi/chart-pie";
+// for systems health
+import sitemapIcon from "@iconify/icons-mdi/sitemap";
+import SystemHealth from "./Components/dashboardSubmenus/systemHealth";
+import MarketAnalysis from "./Components/dashboardSubmenus/marketAnalysis";
+import AgentPerformance from "./Components/dashboardSubmenus/agentPerformance";
+import StatusOverview from "./Components/dashboardSubmenus/statusOverview";
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -130,15 +144,59 @@ const App = () => {
     }
   });
   // Dark/Light theme ends
+  // custom routes for dashboard starts
+  const customRoutes = [
+    <Route exact path="/status_Overview" component={StatusOverview} />,
+    <Route exact path="/agent_Performance" component={AgentPerformance} />,
+    <Route exact path="/market_Analysis" component={MarketAnalysis} />,
+    <Route exact path="/system_Health" component={SystemHealth} />
+  ];
+  // ends
   return (
     <Admin
       theme={MyTheme}
       layout={myLayout}
-      dashboard={Dashboard}
-      // loginPage={myLoginPage}
-      // authProvider={authProvider}
+      customRoutes={customRoutes}
+      // dashboard={Dashboard}
+      loginPage={myLoginPage}
+      authProvider={authProvider}
       dataProvider={dataProvider}
     >
+      <Resource
+        name="status_Overview"
+        options={{
+          label: "Status Overview",
+          menu: "D",
+          icon: <Icon icon={homeAnalytics} />
+        }}
+      />
+      <Resource
+        name="agent_Performance"
+        options={{
+          label: "Agent Performance",
+          menu: "D",
+          icon: <Icon icon={financeIcon} />
+        }}
+      />
+
+      <Resource
+        name="market_Analysis"
+        options={{
+          label: "Market Analysis",
+          menu: "D",
+          icon: <Icon icon={chartPie} />
+        }}
+      />
+
+      <Resource
+        name="system_Health"
+        options={{
+          label: "System Health",
+          menu: "D",
+          icon: <Icon icon={sitemapIcon} />
+        }}
+      />
+
       <Resource
         name="agents"
         list={AgentList}
