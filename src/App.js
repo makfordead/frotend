@@ -1,5 +1,5 @@
 // in src/App.js
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import {
   Admin,
   Resource,
@@ -12,8 +12,13 @@ import {
 } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
 import Dashboard from "./Components/Dashboard";
- import authProvider from "./Utils/authProvider";
-import { AgentList, AgentCreate, AgentEdit, AgentShow } from "./Components/Agents/Agents";
+import authProvider from "./Utils/authProvider";
+import {
+  AgentList,
+  AgentCreate,
+  AgentEdit,
+  AgentShow
+} from "./Components/Agents/Agents";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import {
@@ -26,9 +31,9 @@ import {
   PropertytypeEdit,
   PropertytypeCreate
 } from "./Components/Properties/PropertyTypes";
-import {AdminList, AdminEdit} from "./Components/Admin/Admin"
-import {SystemList, SystemEdit} from './Components/System/System';
-import {createMuiTheme}  from "@material-ui/core/styles";
+import { AdminList, AdminEdit } from "./Components/Admin/Admin";
+import { SystemList, SystemEdit } from "./Components/System/System";
+import { createMuiTheme } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -41,89 +46,98 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import BuildIcon from "@material-ui/icons/Build";
 
 const httpClient = (url, options = {}) => {
-    if (!options.headers) {
-        options.headers = new Headers({ Accept: 'application/json' });
-    }
-    const token = localStorage.getItem('token');
-    options.headers.set('X-Authorization', `Bearer ${token}`);
-    return fetchUtils.fetchJson(url, options);
+  if (!options.headers) {
+    options.headers = new Headers({ Accept: "application/json" });
+  }
+  const token = localStorage.getItem("token");
+  options.headers.set("X-Authorization", `Bearer ${token}`);
+  return fetchUtils.fetchJson(url, options);
 };
-const dataProvider = jsonServerProvider(
-  "http://localhost:8080", httpClient
-);
+const dataProvider = jsonServerProvider("http://localhost:8080", httpClient);
 
-const myLoginPage = () => <Login backgroundImage="" />
 const App = () => {
   // dark theme/light theme starts
-   const [dark, setDark] = React.useState({
-     darkMode: false
-   });
-   // to make sure that darkMode stays
-   useEffect(() => {
-     if(localStorage.getItem('darkMode') === true + ""){
-       setDark({...dark, darkMode: true})
-     }else{
-       setDark({...dark, darkMode: false})
-     }
-   }, [])
-   // ends
-   const handleChange = name => event => {
-     localStorage.setItem('darkMode', event.target.checked + "");
-     setDark({ ...dark, [name]: event.target.checked });
-   };
-   const ConfigurationMenu = React.forwardRef(({ onClick }, ref) => (
-     <>
-       <FormControlLabel
-         control={
-           <Switch
-             checked={dark.darkMode}
-             onChange={handleChange("darkMode")}
-             value="darkMode"
-             color="#212121"
-           />
-         }
-         style={{ marginLeft: "5px" }}
-         label="Dark Mode"
-       />
-     </>
-   ));
-   const MyUserMenu = props => (
-     <UserMenu {...props}>
-       <ConfigurationMenu />
-     </UserMenu>
-   );
-   // custom menu implementation starts
- const menuStyles = theme => ({
-   nested: {
-     paddingLeft: theme.spacing(3)
-   }
- });
- var MenuWithStyles = withStyles(menuStyles)(Menu);
+  const [dark, setDark] = React.useState({
+    lightMode: false
+  });
+  // to make sure that darkMode stays
+  useEffect(() => {
+    if (localStorage.getItem("lightMode") === true + "") {
+      setDark({ lightMode: true });
+    } else {
+      setDark({ lightMode: false });
+    }
+  }, []);
+  // ends
+  const handleChange = name => event => {
+    localStorage.setItem("lightMode", event.target.checked + "");
+    setDark({ ...dark, [name]: event.target.checked });
+  };
+  const ConfigurationMenu = React.forwardRef(({ onClick }, ref) => (
+    <>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={dark.lightMode}
+            onChange={handleChange("lightMode")}
+            value="lightMode"
+            color="#212121"
+          />
+        }
+        style={{ marginLeft: "5px" }}
+        label="Light Mode"
+      />
+    </>
+  ));
+  const MyUserMenu = props => (
+    <UserMenu {...props}>
+      <ConfigurationMenu />
+    </UserMenu>
+  );
+  // custom menu implementation starts
+  const menuStyles = theme => ({
+    nested: {
+      paddingLeft: theme.spacing(3)
+    }
+  });
+  var MenuWithStyles = withStyles(menuStyles)(Menu);
 
- const MyMenu = withRouter(
-   connect(state => ({
-     resources: getResources(state)
-   }))(MenuWithStyles)
- );
- // custom menu implementation ends
-   const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
-   const myLayout = props => <Layout {...props} appBar={MyAppBar} menu={MyMenu} />;
-   const MyTheme = createMuiTheme({
-     palette: {
-       type: dark.darkMode ? "dark" : "light",
-       primary: blue,
-       secondary: blue
-     }
-   });
-   // Dark/Light theme ends
+  const MyMenu = withRouter(
+    connect(state => ({
+      resources: getResources(state)
+    }))(MenuWithStyles)
+  );
+  // custom menu implementation ends
+  const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+  const myLayout = props => (
+    <Layout {...props} appBar={MyAppBar} menu={MyMenu} />
+  );
+  const myLoginPage = props => (
+    <Login
+      {...props}
+      backgroundImage=""
+      style={{
+        backgroundColor:
+          localStorage.getItem("lightMode") === true + "" ? "" : "#424242"
+      }}
+    />
+  );
+  const MyTheme = createMuiTheme({
+    palette: {
+      type: dark.lightMode ? "light" : "dark",
+      primary: blue,
+      secondary: blue
+    }
+  });
+  // Dark/Light theme ends
   return (
     <Admin
-       theme={MyTheme}
-       appLayout={myLayout}
-       dashboard={Dashboard}
-       loginPage={myLoginPage}
-       authProvider={authProvider}
-       dataProvider={dataProvider}
+      theme={MyTheme}
+      layout={myLayout}
+      dashboard={Dashboard}
+      // loginPage={myLoginPage}
+      // authProvider={authProvider}
+      dataProvider={dataProvider}
     >
       <Resource
         name="agents"
