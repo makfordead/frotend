@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Card from "@material-ui/core/Card";
 import Iframe from "react-iframe";
+import "./cardStyles.css";
 
 export default () => {
   const [link, setLink] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:8080/system/1", {
+    fetch("http://localhost:8080/system/3", {
       method: "get",
       headers: new Headers({
         "X-Authorization": `Bearer ${token}`
@@ -18,7 +19,8 @@ export default () => {
       })
       .then(data => {
         // var url = data.IframeUrl + "&output=embed";
-        var url = data.Market_Analysis_IframeUrl.replace("watch?v=", "embed/");
+        console.log(data);
+        var url = data.IframeUrl.replace("watch?v=", "embed/");
         // const IframeUrl = data.IframeUrl;
         setLink(url);
       });

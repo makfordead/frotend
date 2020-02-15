@@ -14,10 +14,8 @@ export const SystemList = props => (
   <List {...props}>
     <Datagrid rowClick="edit">
       <TextField source="id" />
-      <UrlField source="Status_Overview_IframeUrl" />
-      <UrlField source="Agent_Performance_IframeUrl" />
-      <UrlField source="Market_Analysis_IframeUrl" />
-      <UrlField source="System_Health_IframeUrl" />
+     <TextField source="Name" />
+     <UrlField source = "IframeUrl" />
       <EditButton />
     </Datagrid>
   </List>
@@ -25,12 +23,10 @@ export const SystemList = props => (
 
 export const SystemEdit = props => (
   <Edit {...props}>
-    <SimpleForm>
-      <TextInput source="id" />
-      <TextInput source="Status_Overview_IframeUrl" />
-      <TextInput source="Agent_Performance_IframeUrl" />
-      <TextInput source="Market_Analysis_IframeUrl" />
-      <TextInput source="System_Health_IframeUrl" />
+    <SimpleForm redirect="list">
+      <TextInput source="id" disabled/>
+      <TextInput source="Name" disabled />
+      <TextInput source="IframeUrl" />
     </SimpleForm>
   </Edit>
 );

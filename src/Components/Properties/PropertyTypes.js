@@ -14,8 +14,7 @@ import {
 export const PropertytypeList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
-            <TextField source="id" />
-            <TextField source="Name" />
+            <TextField source="Identifier" />
             <TextField source="Description" />
             <EditButton />
       </Datagrid>
@@ -25,9 +24,9 @@ export const PropertytypeList = props => (
 // you need to create all the urls before i can continue
 export const PropertytypeEdit = props => (
     <Edit {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
             <TextInput disabled source="id" />
-            <TextInput source="Name" />
+            <TextInput source="Identifier" />
             <TextInput source="Description" />
         </SimpleForm>
     </Edit>
@@ -35,9 +34,9 @@ export const PropertytypeEdit = props => (
 
 export const PropertytypeCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
             <TextInput disabled source="id" />
-            <TextInput source="Name" />
+            <TextInput source="Identifier" />
             <TextInput  source="Description" />
         </SimpleForm>
     </Create>

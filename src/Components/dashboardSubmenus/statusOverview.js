@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "@material-ui/core/Card";
 import Iframe from "react-iframe";
+import "./cardStyles.css";
 
 export default () => {
   const [link, setLink] = useState("");
@@ -18,7 +19,7 @@ export default () => {
       })
       .then(data => {
         // var url = data.IframeUrl + "&output=embed";
-        var url = data.Status_Overview_IframeUrl.replace("watch?v=", "embed/");
+        var url = data.IframeUrl.replace("watch?v=", "embed/");
         // const IframeUrl = data.IframeUrl;
         setLink(url);
       });

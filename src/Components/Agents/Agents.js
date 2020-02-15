@@ -20,8 +20,7 @@ import {
 export const AgentList = props => (
   <List {...props}>
     <Datagrid rowClick="show">
-      <TextField source="id" />
-      <TextField source="Name" />
+      <TextField source="Identifier" />
       <TextField source="Description" />
       <TextField source="Status" />
       <EditButton />
@@ -32,7 +31,7 @@ export const AgentList = props => (
 const PropertiesFilter = props => (
   <Filter {...props}>
     <ReferenceInput label="PropertyTypes" source="propertytypeId" reference="propertytypes" allowEmpty alwaysOn>
-     <SelectInput optionText="Name" />
+     <SelectInput optionText="Identifier" />
    </ReferenceInput>
   </Filter>
 );
@@ -42,17 +41,16 @@ export const AgentShow = props => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="id" />
-            <TextField source="Name" />
+            <TextField source="Identifier" />
             <TextField source="Description" />
             <TextField source="Status" />
             <ReferenceArrayField source="propertyIds" reference="property">
               <List filters={<PropertiesFilter />} {...props}>
               <Datagrid>
-                  <TextField source="id" />
                   <ReferenceField source="propertytypeId" reference="propertytypes">
-                    <TextField source="Name" />
+                    <TextField source="Identifier" />
                   </ReferenceField>
-                  <TextField source="key" />
+                  <TextField source="Identifier" />
                   <TextField source="value" />
                   <TextField source="valueType" />
                   <TextField source="lastEdited"/>
@@ -78,7 +76,7 @@ export const AgentEdit = props => (
   <Edit title={<AgentTitle />} {...props}>
     <SimpleForm>
       <TextInput disabled source="id" />
-      <TextInput source="Name" />
+      <TextInput source="Identifier" />
       <TextInput source="Description" />
         <SelectInput source="Status" choices={[
               { id: 'ACTIVE', name: 'ACTIVE' },
@@ -92,11 +90,10 @@ export const AgentEdit = props => (
 // UserCreate;
 export const AgentCreate = props => (
   <Create {...props}>
-    <SimpleForm>
+    <SimpleForm redirect="list">
       <TextInput disabled source="id" />
-      <TextInput source="Name" />
+      <TextInput source="Identifier" />
       <TextInput source="Description" />
-
       <SelectInput source="Status" choices={[
             { id: 'ACTIVE', name: 'ACTIVE' },
             { id: 'INACTIVE', name: 'INACTIVE' },

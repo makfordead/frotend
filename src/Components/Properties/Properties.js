@@ -18,10 +18,10 @@ import {
 const PropertiesFilter = props => (
   <Filter {...props}>
      <ReferenceInput label="Agents" source="agentId" reference="agents" allowEmpty alwaysOn>
-      <SelectInput optionText="Name" />
+      <SelectInput optionText="Identifier" />
     </ReferenceInput>
     <ReferenceInput label="PropertyTypes" source="propertytypeId" reference="propertytypes" allowEmpty alwaysOn>
-     <SelectInput optionText="Name" />
+     <SelectInput optionText="Identifier" />
    </ReferenceInput>
 
   </Filter>
@@ -30,14 +30,13 @@ const PropertiesFilter = props => (
 export const PropertyList = props => (
     <List filters={<PropertiesFilter />} {...props}>
         <Datagrid rowClick="edit">
-            <TextField source="id" />
             <ReferenceField source="agentId" reference="agents">
-              <TextField source="Name" />
+              <TextField source="Identifier" />
             </ReferenceField>
             <ReferenceField source="propertytypeId" reference="propertytypes">
-              <TextField source="Name" />
+              <TextField source="Identifier" />
             </ReferenceField>
-            <TextField source="key" />
+            <TextField source="Identifier" />
             <TextField source="value" />
             <TextField source="valueType" />
             <TextField source="lastEdited"/>
@@ -96,15 +95,15 @@ const validateUserCreation = values => {
 
 export const PropertyEdit = props => (
     <Edit {...props}>
-        <SimpleForm validate={validateUserCreation}>
+        <SimpleForm redirect="list" validate={validateUserCreation}>
             <TextInput disabled source="id" />
             <ReferenceInput key="agentId" source="agentId" reference="agents">
-              <SelectInput optionText="Name" />
+              <SelectInput optionText="Identifier" />
             </ReferenceInput>
             <ReferenceInput key="propertytypeId" source="propertytypeId" reference="propertytypes">
-              <SelectInput  optionText="Name" />
+              <SelectInput  optionText="Identifier" />
             </ReferenceInput>
-                  <TextInput source="key" />
+                  <TextInput source="Identifier" />
             <SelectInput
                 source="type"
                 choices={[
@@ -122,14 +121,14 @@ export const PropertyEdit = props => (
 
 export const PropertyCreate = props => (
     <Create {...props}>
-        <SimpleForm validate={validateUserCreation}>
+        <SimpleForm redirect="list" validate={validateUserCreation}>
             <TextInput disabled source="id" />
-            <TextInput source="key" />
+            <TextInput source="Identifier" />
             <ReferenceInput source="agentId" reference="agents">
-              <SelectInput optionText="Name" />
+              <SelectInput optionText="Identifier" />
             </ReferenceInput>
             <ReferenceInput source="propertytypeId" reference="propertytypes">
-              <SelectInput optionText="Name" />
+              <SelectInput optionText="Identifier" />
             </ReferenceInput>
             <SelectInput
         source="type"
