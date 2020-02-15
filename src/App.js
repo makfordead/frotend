@@ -58,6 +58,7 @@ import SystemHealth from "./Components/dashboardSubmenus/systemHealth";
 import MarketAnalysis from "./Components/dashboardSubmenus/marketAnalysis";
 import AgentPerformance from "./Components/dashboardSubmenus/agentPerformance";
 import StatusOverview from "./Components/dashboardSubmenus/statusOverview";
+import AgentCopy from "./Components/Agents/AgentCopy";
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -146,6 +147,7 @@ const App = () => {
   // Dark/Light theme ends
   // custom routes for dashboard starts
   const customRoutes = [
+    <Route exact path="AgentCopy" component={AgentCopy} />,
     <Route exact path="/status_Overview" component={StatusOverview} />,
     <Route exact path="/agent_Performance" component={AgentPerformance} />,
     <Route exact path="/market_Analysis" component={MarketAnalysis} />,
@@ -197,6 +199,14 @@ const App = () => {
         }}
       />
 
+      <Resource
+        name="A"
+        options={{
+          label: "System Health",
+          menu: "D",
+          icon: <Icon icon={sitemapIcon} />
+        }}
+      />
       <Resource
         name="agents"
         list={AgentList}
