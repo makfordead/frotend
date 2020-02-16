@@ -43,6 +43,7 @@ import Menu from "./Components/Menu/Menu";
 import SubjectIcon from "@material-ui/icons/Subject";
 import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import BuildIcon from "@material-ui/icons/Build";
 import { Icon } from "@iconify/react";
@@ -147,7 +148,7 @@ const App = () => {
   // Dark/Light theme ends
   // custom routes for dashboard starts
   const customRoutes = [
-    <Route exact path="AgentCopy" component={AgentCopy} />,
+    <Route exact path="/AgentCopy" component={AgentCopy} />,
     <Route exact path="/status_Overview" component={StatusOverview} />,
     <Route exact path="/agent_Performance" component={AgentPerformance} />,
     <Route exact path="/market_Analysis" component={MarketAnalysis} />,
@@ -200,14 +201,6 @@ const App = () => {
       />
 
       <Resource
-        name="A"
-        options={{
-          label: "System Health",
-          menu: "D",
-          icon: <Icon icon={sitemapIcon} />
-        }}
-      />
-      <Resource
         name="agents"
         list={AgentList}
         edit={AgentEdit}
@@ -216,6 +209,14 @@ const App = () => {
         options={{ label: "Agent Overview", menu: "A", icon: <SubjectIcon /> }}
       />
 
+      <Resource
+        name="AgentCopy"
+        options={{
+          label: "Agent Copy",
+          menu: "A",
+          icon: <FileCopyIcon />
+        }}
+      />
       <Resource
         name="propertytypes"
         list={PropertytypeList}

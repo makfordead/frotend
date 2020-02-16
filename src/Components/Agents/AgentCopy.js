@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "@material-ui/core/Card";
-import Iframe from "react-iframe";
-// import "../dashboardSubmenus/cardStyles.css";
+
+import { SimpleForm, ReferenceInput, SelectInput } from "react-admin";
 
 export default () => {
   const [link, setLink] = useState("");
@@ -19,10 +19,7 @@ export default () => {
       })
       .then(data => {
         // var url = data.IframeUrl + "&output=embed";
-        var url = data.IframeUrl.replace(
-          "watch?v=",
-          "embed/"
-        );
+        var url = data.IframeUrl.replace("watch?v=", "embed/");
         // const IframeUrl = data.IframeUrl;
         setLink(url);
       });
@@ -40,19 +37,29 @@ export default () => {
           letterSpacing: "0.0075em"
         }}
       >
-        Agent Performance
+        Agent Copy
       </h1>
-      <Card style={{ height: "80vh", width: "100%" }}>
-        <Iframe
-          url={link}
-          width="100%"
-          height="100%"
-          id="myId"
-          allowFullScreen
-          className="myClassname"
-          display="initial"
-          position="relative"
-        />
+      <Card>
+        <SimpleForm>
+          <ReferenceInput
+            label="Agent # 1"
+            source="agentId"
+            reference="agents"
+            allowEmpty
+            alwaysOn
+          >
+            <SelectInput optionText="Identifier" />
+          </ReferenceInput>
+          <ReferenceInput
+            label="Agent # 2"
+            source="agentId"
+            reference="agents"
+            allowEmpty
+            alwaysOn
+          >
+            <SelectInput optionText="Identifier" />
+          </ReferenceInput>
+        </SimpleForm>
       </Card>
     </>
   );
