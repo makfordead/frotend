@@ -21,6 +21,7 @@ import {
 export const AgentList = props => (
   <List {...props}>
     <Datagrid rowClick="show">
+      <TextField source="id"/>
       <TextField source="Identifier" />
       <TextField source="Description" />
       <TextField source="Status" />
@@ -46,6 +47,7 @@ const PropertiesFilter = props => (
 export const AgentShow = props => (
   <Show {...props}>
     <SimpleShowLayout>
+      {console.log(props)}
       <TextField source="id" />
       <TextField source="Identifier" />
       <TextField source="Description" />
@@ -53,6 +55,7 @@ export const AgentShow = props => (
       <ReferenceArrayField source="propertyIds" reference="property">
         <List filters={<PropertiesFilter />} {...props}>
           <Datagrid>
+             <TextField source="id" />
             <ReferenceField source="propertytypeId" reference="propertytypes">
               <TextField source="Identifier" />
             </ReferenceField>
@@ -61,7 +64,6 @@ export const AgentShow = props => (
             <TextField source="valueType" />
             <TextField source="lastEdited" />
             <EditButton />
-            <CloneButton />
           </Datagrid>
         </List>
       </ReferenceArrayField>

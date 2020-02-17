@@ -30,6 +30,7 @@ const PropertiesFilter = props => (
 export const PropertyList = props => (
     <List filters={<PropertiesFilter />} {...props}>
         <Datagrid rowClick="edit">
+          <TextField source="id" />
             <ReferenceField source="agentId" reference="agents">
               <TextField source="Identifier" />
             </ReferenceField>
