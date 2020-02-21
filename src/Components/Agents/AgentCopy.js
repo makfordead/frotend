@@ -7,6 +7,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Divider from "@material-ui/core/Divider";
+// import { createBrowserHistory as History } from 'history';
+// import history from './history';
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -18,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default () => {
+export default (props) => {
   // const [link, setLink] = useState("");
   const [agent1, setAgent1] = useState("");
   const [agent2, setAgent2] = useState("");
@@ -41,7 +43,7 @@ export default () => {
         return results.json();
       })
       .then(data => {
-        console.log(data);
+        // console.log(data);
         setTotalAgents(data);
       });
   }, []);
@@ -65,14 +67,19 @@ export default () => {
     fetch("http://localhost:8080/agentCopy/", {
       method: "post",
       headers: {
-        Accept: "application/json, text/plain, /",
         "Content-Type": "application/json",
+        'Accept': 'application/json',
         "X-Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(agents)
     })
       .then(res => res.json())
-      .then(res => console.log(res));
+      .then(res =>  {
+        setAgent1("");
+        setAgent2("");
+        console.log("done");
+        props.history.push("/agents");
+      });
   };
   return (
     <>
@@ -90,7 +97,7 @@ export default () => {
       </h1>
       <Card>
         <FormControl className={classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Agent # 1</InputLabel>
+          <InputLabel id="demo-simple-select-label">Copy from</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -98,13 +105,13 @@ export default () => {
             onChange={handleChangeAgent1}
           >
             {totalAgents.map(data => (
-              <MenuItem value={data.id}>{data.Identifier}</MenuItem>
+              <MenuItem key={data.id} value={data.id}>{data.Identifier}</MenuItem>
             ))}
           </Select>
         </FormControl>
         <Divider />
         <FormControl className={classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Agent # 2</InputLabel>
+          <InputLabel id="demo-simple-select-label">Copy to</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -112,7 +119,7 @@ export default () => {
             onChange={handleChangeAgent2}
           >
             {totalAgents.map(data => (
-              <MenuItem value={data.id}>{data.Identifier}</MenuItem>
+              <MenuItem key={data.id} value={data.id}>{data.Identifier}</MenuItem>
             ))}
           </Select>
         </FormControl>

@@ -16,10 +16,9 @@ import SettingsIcon from "@material-ui/icons/Settings";
 // custom menu starts
 class Menu extends Component {
   menuList = [
-    { name: "A", label: "Agents", icon: <SupervisorAccountIcon /> },
-    { name: "B", label: "Settings", icon: <SettingsIcon /> },
-    { name: "D", label: "Dashboard", icon: <DashboardIcon /> }
-  ];
+    { name: "A", label: "Agents", icon: <SupervisorAccountIcon fontSize="small"/> },
+    { name: "B", label: "Settings", icon: <SettingsIcon fontSize="small" /> },
+    { name: "D", label: "Dashboard", icon: <DashboardIcon fontSize="small" /> }]
   constructor(props) {
     super(props);
     this.state = { openA: false, openB: false, openD: false };
@@ -50,6 +49,7 @@ class Menu extends Component {
                       key={"m" + i}
                       to={`/${resource.name}`}
                       primaryText={resource.options.label || resource.name}
+          
                       leftIcon={
                         resource.options.icon
                           ? resource.options.icon

@@ -37,7 +37,7 @@ export default () => {
           letterSpacing: "0.0075em"
         }}
       >
-        Systems Health
+        System Health
       </h1>
       <Card style={{ height: "80vh", width: "100%" }}>
         <Iframe

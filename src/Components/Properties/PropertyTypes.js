@@ -25,7 +25,6 @@ export const PropertytypeList = props => (
 export const PropertytypeEdit = props => (
     <Edit {...props}>
         <SimpleForm redirect="list">
-            <TextInput disabled source="id" />
             <TextInput source="Identifier" />
             <TextInput source="Description" />
         </SimpleForm>

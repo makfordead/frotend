@@ -60,6 +60,9 @@ import MarketAnalysis from "./Components/dashboardSubmenus/marketAnalysis";
 import AgentPerformance from "./Components/dashboardSubmenus/agentPerformance";
 import StatusOverview from "./Components/dashboardSubmenus/statusOverview";
 import AgentCopy from "./Components/Agents/AgentCopy";
+import { createBrowserHistory as createHistory } from 'history';
+
+const history = createHistory();
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -157,6 +160,7 @@ const App = () => {
   // ends
   return (
     <Admin
+      history={history}
       theme={MyTheme}
       layout={myLayout}
       customRoutes={customRoutes}
@@ -170,7 +174,7 @@ const App = () => {
         options={{
           label: "Status Overview",
           menu: "D",
-          icon: <Icon icon={homeAnalytics} />
+          icon: <Icon icon={homeAnalytics} width="1.1em" height="1.1em"/>
         }}
       />
       <Resource
@@ -178,7 +182,7 @@ const App = () => {
         options={{
           label: "Agent Performance",
           menu: "D",
-          icon: <Icon icon={financeIcon} />
+          icon: <Icon icon={financeIcon} width="1.1em" height="1.1em"/>
         }}
       />
 
@@ -187,7 +191,7 @@ const App = () => {
         options={{
           label: "Market Analysis",
           menu: "D",
-          icon: <Icon icon={chartPie} />
+          icon: <Icon icon={chartPie} width="1.1em" height="1.1em"/>
         }}
       />
 
@@ -196,17 +200,16 @@ const App = () => {
         options={{
           label: "System Health",
           menu: "D",
-          icon: <Icon icon={sitemapIcon} />
-        }}
-      />
-
+          icon: <Icon icon={sitemapIcon} width="1.1em" height="1.1em" />
+      }}
+        />
       <Resource
         name="agents"
         list={AgentList}
         edit={AgentEdit}
         create={AgentCreate}
         show={AgentShow}
-        options={{ label: "Agent Overview", menu: "A", icon: <SubjectIcon /> }}
+        options={{ label: "Agent Overview", menu: "A", icon: <SubjectIcon fontSize="small"/> }}
       />
 
       <Resource
@@ -214,7 +217,7 @@ const App = () => {
         options={{
           label: "Agent Copy",
           menu: "A",
-          icon: <FileCopyIcon />
+          icon: <FileCopyIcon fontSize="small"/>
         }}
       />
       <Resource
@@ -225,7 +228,7 @@ const App = () => {
         options={{
           label: "Property Types",
           menu: "A",
-          icon: <AssignmentTurnedInIcon />
+          icon: <AssignmentTurnedInIcon fontSize="small"/>
         }}
       />
 
@@ -234,19 +237,19 @@ const App = () => {
         list={PropertyList}
         edit={PropertyEdit}
         create={PropertyCreate}
-        options={{ label: "Properties", menu: "A", icon: <BookmarkIcon /> }}
+        options={{ label: "Properties", menu: "A", icon: <BookmarkIcon fontSize="small"/> }}
       />
       <Resource
         name="admin"
         list={AdminList}
         edit={AdminEdit}
-        options={{ label: "User", menu: "B", icon: <AccountBoxIcon /> }}
+        options={{ label: "User", menu: "B", icon: <AccountBoxIcon fontSize="small"/> }}
       />
       <Resource
         name="system"
         list={SystemList}
         edit={SystemEdit}
-        options={{ label: "System", menu: "B", icon: <BuildIcon /> }}
+        options={{ label: "System", menu: "B", icon: <BuildIcon fontSize="small"/> }}
       />
     </Admin>
   );
